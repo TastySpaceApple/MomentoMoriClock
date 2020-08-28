@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen" type="text/css">
+    html, body{
+      margin:0; padding: 0;
+    }
+      .container{
+        display: grid;
+        width: 100vw;
+        height: 100vh;
+        grid-template-areas: ". seven-segment-display  controls";
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-auto-flow:column;
+        align-items: center;
+      }
+      #seven-segment-display{
+        grid-area: seven-segment-display;
+        max-height: 100vh;
+      }
+      #controls{
+        grid-area: controls;
+      }
+      .segment.active{
+        fill: #000;
+      }
+      .segment{
+        fill:#f2f2f2;
+        cursor: pointer;
+      }
+      .segment:hover{
+        fill: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <svg version="1.1" id="seven-segment-display" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 432 576" enable-background="new 0 0 432 576" xml:space="preserve">
+    		<polygon class="segment" stroke="#000000" stroke-width="4" stroke-miterlimit="10" points="278.759,287.927 242.759,323.928
+    			98.759,323.928 62.759,287.927 98.759,251.927 242.759,251.927 		" id="ssd_g"></polygon>
+    		<polygon class="segment" stroke="#000000" stroke-width="4" stroke-miterlimit="10" points="278.759,520.74 242.759,556.74
+    			98.759,556.74 62.759,520.74 98.759,484.74 242.759,484.74 		" id="ssd_d"></polygon>
+    		<polygon class="segment" stroke="#000000" stroke-width="4" stroke-miterlimit="10" points="287.759,295.928 323.759,331.928
+    			323.759,475.928 287.759,511.928 251.759,475.928 251.759,331.928 		" id="ssd_c"></polygon>
+    		<polygon class="segment" stroke="#000000" stroke-width="4" stroke-miterlimit="10" points="53.758,295.928 89.758,331.928
+    			89.758,475.928 53.758,511.928 17.758,475.928 17.758,331.928 		" id="ssd_e"></polygon>
+    		<polygon class="segment" id="ssd_a" fill="#D1D3D4" stroke="#000000" stroke-width="4" stroke-miterlimit="10" points="278.759,55.26 242.759,91.26
+    			98.759,91.26 62.759,55.26 98.759,19.26 242.759,19.26 		"></polygon>
+    		<polygon class="segment" stroke="#000000" stroke-width="4" stroke-miterlimit="10" points="287.759,64.427 323.759,100.427
+    			323.759,244.427 287.759,280.427 251.759,244.427 251.759,100.427 		" id="ssd_b"></polygon>
+    		<polygon class="segment" stroke="#000000" stroke-width="4" stroke-miterlimit="10" points="53.758,64.427 89.759,100.427
+    			89.759,244.427 53.758,280.427 17.758,244.427 17.758,100.427 		" id="ssd_f"></polygon>
+    </svg>
+    <div id="controls">
+      <div id="result"></div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    const segment_ids = ["a", "b", "c", "d", "e", "f", "g"];
+    document.querySelector("#seven-segment-display").addEventListener('click', function(e){
+      console.log(e.target);
+      if(e.target.classList.contains("segment")) e.target.classList.toggle("active");
+      updateResult();
+    })
+    function updateResult(){
+      let binary = segment_ids.map((id, i) => {
+        return document.querySelector("#ssd_" + id).classList.contains("active") ? 1 : 0;
+      }).join("");
+      binary = parseInt(binary, 2);
+      document.querySelector("#result").textContent = binary.toString(16).toUpperCase();;
+    }
+  </script>
+  </body>
+</html>
